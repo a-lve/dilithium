@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include "api.h"
+#include "config.h"
+#include "sign.h"
 
 // Convert a hexadecimal string to its binary representation
 int hex_to_binary(const char *hex_string, unsigned char *binary_output, int output_size) {
@@ -32,7 +31,7 @@ int main() {
     unsigned char sm[CRYPTO_BYTES + 3300];
     unsigned char m[3300];
     unsigned long long smlen = 2453;
-    unsigned long long mlen;
+    size_t mlen;
     // Convert hexadecimal strings to binary
     if (!hex_to_binary(hex_pk, pk, CRYPTO_PUBLICKEYBYTES) ||
         !hex_to_binary(hex_sm, sm, CRYPTO_BYTES + 3300) ||

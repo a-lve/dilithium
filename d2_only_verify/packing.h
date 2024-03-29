@@ -1,8 +1,7 @@
 #ifndef PACKING_H
 #define PACKING_H
 
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 #include "polyvec.h"
 
 #define pack_pk DILITHIUM_NAMESPACE(_pack_pk)

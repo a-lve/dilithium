@@ -1,8 +1,7 @@
 #ifndef ROUNDING_H
 #define ROUNDING_H
 
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 
 #define power2round DILITHIUM_NAMESPACE(_power2round)
 int32_t power2round(int32_t *a0, int32_t a);

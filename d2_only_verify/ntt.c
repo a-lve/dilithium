@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include "params.h"
 #include "ntt.h"
 #include "reduce.h"
 

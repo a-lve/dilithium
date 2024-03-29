@@ -1,8 +1,7 @@
 CC ?= /usr/bin/cc
-# CFLAGS += -Wall -Wextra -Wpedantic -Wmissing-prototypes -Wredundant-decls \
-#   -Wshadow -Wvla -Wpointer-arith -O3 -march=native -mtune=native -g -Wno-overlength-strings -O0
-# --stack=size
-NISTFLAGS += -Wno-unused-result -O3 
+CFLAGS += -Wall -Wextra -Wpedantic -Wmissing-prototypes -Wredundant-decls \
+  -Wshadow -Wvla -Wpointer-arith -O3 -march=native -mtune=native -g -Wno-overlength-strings -O0
+NISTFLAGS += -Wno-unused-result -O3
 SOURCES = sign.c packing.c polyvec.c poly.c ntt.c reduce.c rounding.c randombytes.c
 HEADERS = config.h sign.h packing.h polyvec.h poly.h ntt.h \
   reduce.h rounding.h symmetric.h randombytes.h

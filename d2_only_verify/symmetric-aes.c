@@ -1,6 +1,4 @@
-#include <stdint.h>
 #include "symmetric.h"
-#include "aes256ctr.h"
 
 void dilithium_aes256ctr_init(aes256ctr_ctx *state,
                               const uint8_t key[32],

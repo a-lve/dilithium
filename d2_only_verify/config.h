@@ -1,44 +1,66 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DILITHIUM_MODE 2
-//#define DILITHIUM_USE_AES
-//#define DILITHIUM_RANDOMIZED_SIGNING
-//#define USE_RDPMC
-//#define DBENCH
+#include <stdint.h>
+#include <stddef.h>
 
-#ifndef DILITHIUM_MODE
 #define DILITHIUM_MODE 2
-#endif
 
-#ifdef DILITHIUM_USE_AES
-#if DILITHIUM_MODE == 2
-#define CRYPTO_ALGNAME "Dilithium2-AES"
-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium2aes_ref
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium2aes_ref_##s
-#elif DILITHIUM_MODE == 3
-#define CRYPTO_ALGNAME "Dilithium3-AES"
-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium3aes_ref
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium3aes_ref_##s
-#elif DILITHIUM_MODE == 5
-#define CRYPTO_ALGNAME "Dilithium5-AES"
-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium5aes_ref
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium5aes_ref_##s
-#endif
-#else
-#if DILITHIUM_MODE == 2
 #define CRYPTO_ALGNAME "Dilithium2"
+
 #define DILITHIUM_NAMESPACETOP pqcrystals_dilithium2_ref
 #define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium2_ref_##s
-#elif DILITHIUM_MODE == 3
-#define CRYPTO_ALGNAME "Dilithium3"
-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium3_ref
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium3_ref_##s
-#elif DILITHIUM_MODE == 5
-#define CRYPTO_ALGNAME "Dilithium5"
-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium5_ref
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium5_ref_##s
+
+// #define CRYPTO_PUBLICKEYBYTES 1312
+// #define CRYPTO_SECRETKEYBYTES 2544
+// #define CRYPTO_BYTES 2420
+
+#define SEEDBYTES 32
+#define CRHBYTES 48
+#define N 256
+#define Q 8380417
+#define D 13
+#define ROOT_OF_UNITY 1753
+
+#if DILITHIUM_MODE == 2
+#define K 4
+#define L 4
+#define ETA 2
+#define TAU 39
+#define BETA 78
+#define GAMMA1 (1 << 17)
+#define GAMMA2 ((Q-1)/88)
+#define OMEGA 80
+
 #endif
+
+#define POLYT1_PACKEDBYTES  320
+#define POLYT0_PACKEDBYTES  416
+#define POLYVECH_PACKEDBYTES (OMEGA + K)
+
+#if GAMMA1 == (1 << 17)
+#define POLYZ_PACKEDBYTES   576
+#elif GAMMA1 == (1 << 19)
+#define POLYZ_PACKEDBYTES   640
 #endif
+
+#if GAMMA2 == (Q-1)/88
+#define POLYW1_PACKEDBYTES  192
+#elif GAMMA2 == (Q-1)/32
+#define POLYW1_PACKEDBYTES  128
+#endif
+
+#if ETA == 2
+#define POLYETA_PACKEDBYTES  96
+#elif ETA == 4
+#define POLYETA_PACKEDBYTES 128
+#endif
+
+#define CRYPTO_PUBLICKEYBYTES (SEEDBYTES + K*POLYT1_PACKEDBYTES)
+#define CRYPTO_SECRETKEYBYTES (2*SEEDBYTES + CRHBYTES \
+                               + L*POLYETA_PACKEDBYTES \
+                               + K*POLYETA_PACKEDBYTES \
+                               + K*POLYT0_PACKEDBYTES)
+#define CRYPTO_BYTES (SEEDBYTES + L*POLYZ_PACKEDBYTES + POLYVECH_PACKEDBYTES)
 
 #endif

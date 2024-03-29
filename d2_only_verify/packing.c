@@ -1,7 +1,4 @@
-#include "params.h"
 #include "packing.h"
-#include "polyvec.h"
-#include "poly.h"
 
 /*************************************************
 * Name:        pack_pk
