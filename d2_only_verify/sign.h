@@ -1,11 +1,8 @@
 #ifndef SIGN_H
 #define SIGN_H
 
-#include <stddef.h>
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 #include "polyvec.h"
-#include "poly.h"
 
 #define challenge DILITHIUM_NAMESPACE(_challenge)
 void challenge(poly *c, const uint8_t seed[SEEDBYTES]);

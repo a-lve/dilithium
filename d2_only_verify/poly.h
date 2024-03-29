@@ -1,8 +1,7 @@
 #ifndef POLY_H
 #define POLY_H
 
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 
 typedef struct {
   int32_t coeffs[N];

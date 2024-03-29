@@ -1,8 +1,7 @@
 #ifndef POLYVEC_H
 #define POLYVEC_H
 
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 #include "poly.h"
 
 /* Vectors of polynomials of length L */

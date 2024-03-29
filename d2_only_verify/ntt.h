@@ -1,8 +1,7 @@
 #ifndef NTT_H
 #define NTT_H
 
-#include <stdint.h>
-#include "params.h"
+#include "config.h"
 
 #define ntt DILITHIUM_NAMESPACE(_ntt)
 void ntt(int32_t a[N]);
