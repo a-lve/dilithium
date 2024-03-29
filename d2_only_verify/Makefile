@@ -7,18 +7,17 @@ HEADERS = config.h params.h api.h sign.h packing.h polyvec.h poly.h ntt.h \
   reduce.h rounding.h symmetric.h randombytes.h
 KECCAK_SOURCES = $(SOURCES) fips202.c symmetric-shake.c
 KECCAK_HEADERS = $(HEADERS) fips202.h
-AES_SOURCES = $(SOURCES) fips202.c aes256ctr.c symmetric-aes.c
-AES_HEADERS = $(HEADERS) fips202.h aes256ctr.h
+
 
 .PHONY: all
 
 all: test_dilithium2 
 
 
-test_dilithium2: test_dilithium2.c rng.c rng.h $(KECCAK_SOURCES) \
+test_dilithium2: test_dilithium2.c randombytes.c $(KECCAK_SOURCES) \
   $(KECCAK_HEADERS)
-	$(CC) $(NISTFLAGS) -DDILITHIUM_MODE=2 \
-	  -o $@ $< rng.c $(KECCAK_SOURCES) $(LDFLAGS) -lcrypto
+	$(CC) $(CFLAGS) -DDILITHIUM_MODE=2 \
+	  -o $@ $< randombytes.c $(KECCAK_SOURCES)
 
 clean:
 	rm -f test_dilithium2
