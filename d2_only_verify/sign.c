@@ -1,4 +1,3 @@
-#include "randombytes.h"
 #include "sign.h"
 #include "packing.h"
 #include "symmetric.h"
@@ -15,49 +14,49 @@
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
-  uint8_t seedbuf[3*SEEDBYTES];
-  uint8_t tr[CRHBYTES];
-  const uint8_t *rho, *rhoprime, *key;
-  polyvecl mat[K];
-  polyvecl s1, s1hat;
-  polyveck s2, t1, t0;
+// int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+  // uint8_t seedbuf[3*SEEDBYTES];
+  // uint8_t tr[CRHBYTES];
+  // const uint8_t *rho, *rhoprime, *key;
+  // polyvecl mat[K];
+  // polyvecl s1, s1hat;
+  // polyveck s2, t1, t0;
 
-  /* Get randomness for rho, rhoprime and key */
-  randombytes(seedbuf, SEEDBYTES);
-  shake256(seedbuf, 3*SEEDBYTES, seedbuf, SEEDBYTES);
-  rho = seedbuf;
-  rhoprime = seedbuf + SEEDBYTES;
-  key = seedbuf + 2*SEEDBYTES;
+  // /* Get randomness for rho, rhoprime and key */
+  // randombytes(seedbuf, SEEDBYTES);
+  // shake256(seedbuf, 3*SEEDBYTES, seedbuf, SEEDBYTES);
+  // rho = seedbuf;
+  // rhoprime = seedbuf + SEEDBYTES;
+  // key = seedbuf + 2*SEEDBYTES;
 
-  /* Expand matrix */
-  polyvec_matrix_expand(mat, rho);
+  // /* Expand matrix */
+  // polyvec_matrix_expand(mat, rho);
 
-  /* Sample short vectors s1 and s2 */
-  polyvecl_uniform_eta(&s1, rhoprime, 0);
-  polyveck_uniform_eta(&s2, rhoprime, L);
+  // /* Sample short vectors s1 and s2 */
+  // polyvecl_uniform_eta(&s1, rhoprime, 0);
+  // polyveck_uniform_eta(&s2, rhoprime, L);
 
-  /* Matrix-vector multiplication */
-  s1hat = s1;
-  polyvecl_ntt(&s1hat);
-  polyvec_matrix_pointwise_montgomery(&t1, mat, &s1hat);
-  polyveck_reduce(&t1);
-  polyveck_invntt_tomont(&t1);
+  // /* Matrix-vector multiplication */
+  // s1hat = s1;
+  // polyvecl_ntt(&s1hat);
+  // polyvec_matrix_pointwise_montgomery(&t1, mat, &s1hat);
+  // polyveck_reduce(&t1);
+  // polyveck_invntt_tomont(&t1);
 
-  /* Add error vector s2 */
-  polyveck_add(&t1, &t1, &s2);
+  // /* Add error vector s2 */
+  // polyveck_add(&t1, &t1, &s2);
 
-  /* Extract t1 and write public key */
-  polyveck_caddq(&t1);
-  polyveck_power2round(&t1, &t0, &t1);
-  pack_pk(pk, rho, &t1);
+  // /* Extract t1 and write public key */
+  // polyveck_caddq(&t1);
+  // polyveck_power2round(&t1, &t0, &t1);
+  // pack_pk(pk, rho, &t1);
 
-  /* Compute CRH(rho, t1) and write secret key */
-  crh(tr, pk, CRYPTO_PUBLICKEYBYTES);
-  pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
+  // /* Compute CRH(rho, t1) and write secret key */
+  // crh(tr, pk, CRYPTO_PUBLICKEYBYTES);
+  // pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
 
-  return 0;
-}
+//   return 0;
+// }
 
 /*************************************************
 * Name:        crypto_sign_signature
@@ -101,11 +100,7 @@ int crypto_sign_signature(uint8_t *sig,
   shake256_finalize(&state);
   shake256_squeeze(mu, CRHBYTES, &state);
 
-#ifdef DILITHIUM_RANDOMIZED_SIGNING
-  randombytes(rhoprime, CRHBYTES);
-#else
   crh(rhoprime, key, SEEDBYTES + CRHBYTES);
-#endif
 
   /* Expand matrix and transform vectors */
   polyvec_matrix_expand(mat, rho);
